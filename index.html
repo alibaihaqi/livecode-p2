@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>Image-Uploader</title>
+  </head>
+
+  <body>
+    <div id="app">
+
+      <h1>Homepage</h1>
+        Email :
+        <input type="email"  placeholder="Input Email" v-model="email">
+        <br>
+        Name :
+        <input type="text"  placeholder="Input Name" v-model="name">
+        <br>
+        <button type="submit" v-on:click="createUser">Submit Data</button>
+
+      <h2>Upload Photo</h2>
+
+      <input type="file" v-on:change="handleImage($event.target.files[0])">
+      <button type="submit" v-on:click="uploadImage">Upload Photo</button>
+      
+      
+      <ul>
+        <li v-for="image in showImage">
+          <img v:bind:src="image" alt="photo">
+        </li>
+      </ul>
+      
+    </div>
+    <script src="./vue.js"></script>
+  </body>
+
+</html>
