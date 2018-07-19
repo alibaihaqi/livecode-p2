@@ -1,56 +1,62 @@
 
-const app = new Vue ({
-  el : '#app',
-  data : {
-    email : null,
-    name : null,
-    images : null,
-    showImage : []
+const app = new Vue({
+  el: '#app',
+  data: {
+    email: null,
+    name: null,
+    images: null,
+    showImage: []
   },
-  created : function () {
-    this.uploadImage()
+  created: function () {
+    this.getImage()
   },
-  methods : {
+  methods: {
 
-    createUser : function() {
+    createUser: function () {
       console.log(this.email)
       console.log(this.name)
 
       axios.post('http://35.240.157.177/request-token', {
-        name : this.name,
-        email : this.email,
+        name: this.name,
+        email: this.email,
       })
-        .then( function (User) {
+        .then(function (User) {
           console.log(User)
           console.log('----------> masuk')
           localStorage.setItem('uuid', User.data.uuid)
         })
 
-        .catch( function (err) {
+        .catch(function (err) {
           console.log(err)
         })
     },
-    getImage : function() {
+    getImage: function () {
       let token = localStorage.getItem('uuid')
 
-      axios.get('http://35.240.157.177/image', 
-    {
-      headers : {
-        uuid : token
-      }
-    })
+      axios.get('http://35.240.157.177/image',
+        {
+          headers: {
+            authorization: token
+          }
+        })
 
-      .then(result => {
-        this.showImage = result.data
-      })
+        .then(result => {
+         this.showImage = result.data
+          console.log(this.showImage)
+        })
+
+        .catch(err => {
+          console.log(err)
+        })
     },
-    handleImage : function(file) {
+    handleImage: function (file) {
       console.log(file)
       this.image = file
     },
-    uploadImage : function() {
+    uploadImage: function () {
+      console.log(axios)
       let formData = new FormData()
-      formData.append('image', this.image)
+      formData.append('file', this.image)
       console.log(formData)
 
       let token = localStorage.getItem('uuid')
@@ -58,15 +64,19 @@ const app = new Vue ({
       axios({
         url: 'http://35.240.157.177/image',
         method: 'post',
-        data : formData,
+        data: formData,
         headers: {
-          authorization : token
+          authorization: token
         }
-     })
-        .then(response => console.log(response)
-        )
+      })
+        .then( response =>
+        { 
+          console.log(response)
+        })
 
-        .catch(err => console.log(err))
+        .catch( err => {
+          console.log(err)
+        })
 
     },
 
